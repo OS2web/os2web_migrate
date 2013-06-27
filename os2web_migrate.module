@@ -1,0 +1,335 @@
+<?php
+
+include_once('os2web_migrate.features.inc');
+
+/**
+ * Implements hook_flush_caches().
+ */
+function os2web_migrate_flush_caches() {
+  os2web_migrate_register_migrations();
+}
+
+/**
+ * Register all D6->D7 migrations.
+ */
+function os2web_migrate_register_migrations() {
+  /**
+   * Each migration being registered takes an array of arguments, some required
+   * and some optional. Start with the common arguments required by all - the
+   * source_connection (connection key, set up in settings.php, pointing to
+   * the Drupal 6 database) and source_version (major version of Drupal).
+   */
+  $common_arguments = array(
+    'source_connection' => 'os2web_migrate_migration_db',
+    'source_version' => 7,
+  );
+
+
+  // The description and the migration machine name are also required arguments,
+  // which will be unique for each migration you register.
+  $arguments = $common_arguments + array(
+    'description' => t('Migration of users'),
+    'machine_name' => 'Os2webUser',
+  );
+
+  // We just use the migrate_d2d D6 migration class as-is.
+  Migration::registerMigration('DrupalUser7Migration', $arguments['machine_name'],
+                               $arguments);
+
+  $file_arguments = $common_arguments + array(
+    'machine_name' => 'Os2webFile',
+    'description' => t('Import managed files'),
+    'default_uid' => 1,
+    'source_dir' => '/var/www/syddjurs.dev/public_html/sites/default/files/',
+  );
+  Migration::registerMigration('DrupalFile7Migration', $file_arguments['machine_name'], $file_arguments);
+
+  // For vocabulary migrations, source_vocabulary and destination_vocabulary are
+  // required arguments. Note that in Drupal 6 vocabularies did not have machine
+  // names, so we use the vocabulary ID to uniquely identify them.
+  $vocabulary_arguments = array(
+
+    // Os2web_base.
+    array(
+      'description' => t('Migration of vocab site structure'),
+      'machine_name' => 'os2web_base_tax_site_structure',
+      'source_vocabulary' => 'site_struktur',
+      'destination_vocabulary' => 'os2web_base_tax_site_structure',
+    ),
+    array(
+      'description' => t('Migration of vocab promte to'),
+      'machine_name' => 'os2web_base_tax_promoteto',
+      'source_vocabulary' => 'forfrem_til',
+      'destination_vocabulary' => 'os2web_base_tax_promoteto',
+    ),
+
+    // Os2web_taxonomies.
+
+    array(
+      'description' => t('Migration of vocab committee'),
+      'machine_name' => 'os2web_taxonomies_tax_comittee',
+      'source_vocabulary' => 'committee',
+      'destination_vocabulary' => 'os2web_taxonomies_tax_comittee',
+    ),
+    array(
+      'description' => t('Migration of vocab editor tags'),
+      'machine_name' => 'os2web_taxonomies_tax_editor_tag',
+      'source_vocabulary' => 'redaktoertags',
+      'destination_vocabulary' => 'os2web_taxonomies_tax_editor_tag',
+    ),
+    array(
+      'description' => t('Migration of vocab kle'),
+      'machine_name' => 'os2web_taxonomies_tax_kle',
+      'source_vocabulary' => 'kle',
+      'destination_vocabulary' => 'os2web_taxonomies_tax_kle',
+    ),
+    array(
+      'description' => t('Migration of vocab organisation'),
+      'machine_name' => 'os2web_taxonomies_tax_org',
+      'source_vocabulary' => 'organisation',
+      'destination_vocabulary' => 'os2web_taxonomies_tax_org',
+    ),
+    array(
+      'description' => t('Migration of vocab places'),
+      'machine_name' => 'os2web_taxonomies_tax_places',
+      'source_vocabulary' => 'egennavne_stedord',
+      'destination_vocabulary' => 'os2web_taxonomies_tax_places',
+    ),
+    array(
+      'description' => t('Migration of vocab politics'),
+      'machine_name' => 'os2web_taxonomies_tax_politics',
+      'source_vocabulary' => 'politik',
+      'destination_vocabulary' => 'os2web_taxonomies_tax_politics',
+    ),
+    array(
+      'description' => t('Migration of vocab portal category'),
+      'machine_name' => 'os2web_taxonomies_tax_portal_cat',
+      'source_vocabulary' => 'portalkategori',
+      'destination_vocabulary' => 'os2web_taxonomies_tax_portal_cat',
+    ),
+    array(
+      'description' => t('Migration of vocab user positions'),
+      'machine_name' => 'os2web_taxonomies_tax_user_pos',
+      'source_vocabulary' => 'user_position',
+      'destination_vocabulary' => 'os2web_taxonomies_tax_user_pos',
+    ),
+    array(
+      'description' => t('Migration of vocab tags'),
+      'machine_name' => 'tags',
+      'source_vocabulary' => 'tags',
+      'destination_vocabulary' => 'tags',
+    ),
+
+    // os2web_cp_case taxonomies.
+    array(
+      'description' => t('Migration of CP approved rules'),
+      'machine_name' => 'os2web_cp_service_tax_approved_rules',
+      'source_vocabulary' => 'os2web_cp_service_tax_approved_rules',
+      'destination_vocabulary' => 'os2web_cp_service_tax_approved_rules',
+    ),
+  );
+
+  // Again, we're using the migrate_d2d class directly.
+  // The soft dependency says that while we don't have to run the user migration
+  // first, we want to make sure it's listed first so the vocubularies are
+  // listed right ahead of the node migrations.
+  $common_vocabulary_arguments = $common_arguments + array(
+    'class_name' => 'DrupalTerm7Migration',
+    'soft_dependencies' => array('Os2webUser'),
+  );
+  foreach ($vocabulary_arguments as $arguments) {
+    $arguments += $common_vocabulary_arguments;
+    Migration::registerMigration($arguments['class_name'], $arguments['machine_name'],
+                                 $arguments);
+  }
+
+  // Node migrations - each has its own class derived from the migrate_d2d class,
+  // specifying its particular field mappings and transformations. source_type
+  // and destination_type are required arguments.
+  $node_arguments = array(
+
+    // Base node types. os2web_base.
+    array(
+      'class_name' => 'Os2webContentpageMigration',
+      'description' => t('Migration of contentpages'),
+      'machine_name' => 'os2web_base_contentpage',
+      'source_type' => 'contentpage',
+      'destination_type' => 'os2web_base_contentpage',
+    ),
+    // array(
+    //   'class_name' => 'Os2webGalleryMigration',
+    //   'description' => t('Migration of galleries'),
+    //   'machine_name' => 'os2web_base_gallery',
+    //   'source_type' => 'gallery',
+    //   'destination_type' => 'os2web_base_gallery',
+    // ),
+    // array(
+    //   'class_name' => 'Os2webIframeMigration',
+    //   'description' => t('Migration of iframes'),
+    //   'machine_name' => 'os2web_base_iframe',
+    //   'source_type' => 'iframe',
+    //   'destination_type' => 'os2web_base_iframe',
+    // ),
+    array(
+      'class_name' => 'Os2webNewsMigration',
+      'description' => t('Migration of news'),
+      'machine_name' => 'os2web_base_news',
+      'source_type' => 'news',
+      'destination_type' => 'os2web_base_news',
+    ),
+    array(
+      'class_name' => 'Os2webRotatingImageMigration',
+      'description' => t('Migration of Rotating Image'),
+      'machine_name' => 'os2web_base_rotating_image',
+      'source_type' => 'rotating_image',
+      'destination_type' => 'os2web_base_rotating_image',
+    ),
+    array(
+      'class_name' => 'Os2webSelfserviceLinkMigration',
+      'description' => t('Migration of Selfservice Links'),
+      'machine_name' => 'os2web_base_selfservice_link',
+      'source_type' => 'selvbetjenings_link',
+      'destination_type' => 'os2web_base_selfservice_link',
+    ),
+    array(
+      'class_name' => 'Os2webMediaMigration',
+      'description' => t('Migration of medias'),
+      'machine_name' => 'media',
+      'source_type' => 'media',
+      'destination_type' => 'media',
+    ),
+
+    // Borger.dk nodes - os2web_borger_dk.
+    array(
+      'class_name' => 'Os2webBorgerDkMigration',
+      'description' => t('Migration of Borger.dk articles'),
+      'machine_name' => 'os2web_borger_dk_article',
+      'source_type' => 'os2web_borger_dk_article',
+      'destination_type' => 'os2web_borger_dk_article',
+    ),
+
+    // Citizen Service - os2web_citizenservices.
+    array(
+      'class_name' => 'OS2webCitizenServiceMigration',
+      'description' => t('Migration of citizenservice nodes'),
+      'machine_name' => 'os2web_citizenservices_service',
+      'source_type' => 'borgerservices',
+      'destination_type' => 'os2web_citizenservices_service',
+    ),
+
+    // Contact block nodes - os2web_contact.
+    array(
+      'class_name' => 'OS2webContactMigration',
+      'description' => t('Migration of contact nodes'),
+      'machine_name' => 'os2web_contact_contact',
+      'source_type' => 'kontaktblok',
+      'destination_type' => 'os2web_contact_contact',
+    ),
+
+    // CP service nodes - os2web_cp_service.
+    array(
+      'class_name' => 'OS2webCPCaseMigration',
+      'description' => t('Migration of CP Cases'),
+      'machine_name' => 'os2web_cp_service_cp_case',
+      'source_type' => 'os2web_cp_service_cp_case',
+      'destination_type' => 'os2web_cp_service_cp_case',
+      'dependencies' => array('os2web_cp_service_cp_document'),
+    ),
+    array(
+      'class_name' => 'OS2webCPDocMigration',
+      'description' => t('Migration of CP Docs'),
+      'machine_name' => 'os2web_cp_service_cp_document',
+      'source_type' => 'os2web_cp_service_cp_document',
+      'destination_type' => 'os2web_cp_service_cp_document',
+    ),
+
+    // Frontend - os2web_frontend.
+    array(
+      'class_name' => 'OS2webBackgroundImageMigration',
+      'description' => t('Migration of Frontend background images'),
+      'machine_name' => 'os2web_frontend_background_img',
+      'source_type' => 'baggrund',
+      'destination_type' => 'os2web_frontend_background_img',
+    ),
+
+    // Hearings - os2web_hearings.
+    array(
+      'class_name' => 'OS2webHearingsMigration',
+      'description' => t('Migration of hearings'),
+      'machine_name' => 'os2web_hearings_hearing',
+      'source_type' => 'hoering',
+      'destination_type' => 'os2web_hearings_hearing',
+    ),
+
+    // Kulturnaut events - os2web_kulturnaut_events.
+    array(
+      'class_name' => 'OS2webKulturnauEventMigration',
+      'description' => t('Migration of Kulturnaut events'),
+      'machine_name' => 'os2web_kulturnaut_knactivity',
+      'source_type' => 'knactivity',
+      'destination_type' => 'os2web_kulturnaut_knactivity',
+    ),
+
+    // Meetings - os2web_meetings.
+    array(
+      'class_name' => 'OS2webMeetingMigration',
+      'description' => t('Migration of meetings'),
+      'machine_name' => 'os2web_meetings_meeting',
+      'source_type' => 'meeting',
+      'destination_type' => 'os2web_meetings_meeting',
+    ),
+    array(
+      'class_name' => 'OS2webMeetingBulletAttMigration',
+      'description' => t('Migration of meeting bullet attachments'),
+      'machine_name' => 'os2web_meetings_bullet_attach',
+      'source_type' => 'bullet_point_attachment',
+      'destination_type' => 'os2web_meetings_bullet_attach',
+    ),
+    array(
+      'class_name' => 'OS2webMeetingBulletMigration',
+      'description' => t('Migration of meeting bullet'),
+      'machine_name' => 'os2web_meetings_bullet',
+      'source_type' => 'bullet_point',
+      'destination_type' => 'os2web_meetings_bullet',
+    ),
+
+    // array(
+    //   'class_name' => 'ExampleArticleMigration',
+    //   'description' => t('Migration of article nodes from Drupal 6'),
+    //   'machine_name' => 'Article',
+    //   'source_type' => 'my_article',
+    //   'destination_type' => 'new_article',
+    //   'dependencies' => array('Image', 'Countries', 'Topics'),
+    // ),
+  );
+  // Tell the node migrations where the users are coming from, so they can
+  // set up the dependency and resolve D6->D7 uids.
+  $common_node_arguments = $common_arguments + array(
+    'user_migration' => 'Os2webUser',
+    'dependencies' => array('Os2webFile', 'Os2webUser'),
+  );
+  foreach ($node_arguments as $arguments) {
+    $arguments = array_merge_recursive($arguments, $common_node_arguments);
+    Migration::registerMigration($arguments['class_name'], $arguments['machine_name'],
+                                 $arguments);
+  }
+
+  // // Menu migrations -- same requirements as users
+  // $menu_arguments = $common_arguments + array(
+  //   'description' => t('Migration of menus from Drupal 6'),
+  //   'machine_name' => 'Menu',
+  // );
+
+  // // We just use the migrate_d2d D6 migration class as-is.
+  // Migration::registerMigration('DrupalMenu6Migration', $menu_arguments['machine_name'],
+  //                              $menu_arguments);
+
+  // // Menu links migrations -- basic requirements, plus must set up menu dependency
+  // $menu_links_arguments = $common_arguments + array(
+  //   'description' => t('Migration of menu links from Drupal 6'),
+  //   'machine_name' => 'MenuLinks',
+  //   'menu_migration' => $menu_arguments['machine_name'],
+  // );
+  // Migration::registerMigration('DrupalMenuLinks6Migration', $menu_links_arguments['machine_name'],
+  //                              $menu_links_arguments);
+}
