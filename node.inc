@@ -47,8 +47,8 @@ class Os2webContentpageMigration extends NodeMigration {
       ->sourceMigration('os2web_taxonomies_tax_kle');
     $this->addFieldMapping('field_os2web_base_field_kle_ref:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_base_field_kle_ref:create_term')->defaultValue(TRUE);
-    // $this->addFieldMapping('field_os2web_base_field_loca_ref', 'field_termref_sted')
-    //    ->sourceMigration('os2web_meetings_tax_location');
+    $this->addFieldMapping('field_os2web_base_field_loca_ref', 'field_termref_sted')
+       ->sourceMigration('os2web_meetings_tax_location');
     $this->addFieldMapping('field_os2web_base_field_loca_ref:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_base_field_loca_ref:create_term')->defaultValue(TRUE);
     $this->addFieldMapping('field_os2web_base_field_organiz', 'field_organization')
@@ -65,9 +65,11 @@ class Os2webContentpageMigration extends NodeMigration {
     $this->addFieldMapping('field_os2web_base_field_struct:create_term')->defaultValue(TRUE);
     $this->addFieldMapping('field_os2web_base_field_hidlinks', 'field_skjul_relaterede_links');
     $this->addFieldMapping('field_os2web_base_field_rotate', 'field_rotate_publish');
-    $this->addFieldMapping('field_os2web_base_field_selfserv', 'field_noderef_selvbtjn');
+    $this->addFieldMapping('field_os2web_base_field_selfserv', 'field_noderef_selvbtjn')
+      ->sourceMigration('os2web_base_selfservice_link');
     $this->addFieldMapping('field_os2web_base_field_sourceid', 'field_source_id');
-    $this->addFieldMapping('field_os2web_base_field_spotbox', 'field_indholdsside_spotboxe');
+    $this->addFieldMapping('field_os2web_base_field_spotbox', 'field_indholdsside_spotboxe')
+      ->sourceMigration('os2web_spotbox_box');
 
   }
 }
@@ -116,11 +118,10 @@ class Os2webNewsMigration extends NodeMigration {
     $this->addFieldMapping('field_os2web_base_field_kle_ref:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_base_field_kle_ref:create_term')->defaultValue(TRUE);
 
-    // TODO: add location:
-    // $this->addFieldMapping('field_os2web_base_field_loca_ref', 'field_termref_sted')
-    //   ->sourceMigration('os2web_meetings_tax_location');
-    // $this->addFieldMapping('field_os2web_base_field_loca_ref:source_type')->defaultValue('tid');
-    // $this->addFieldMapping('field_os2web_base_field_loca_ref:create_term')->defaultValue(TRUE);
+    $this->addFieldMapping('field_os2web_base_field_loca_ref', 'field_termref_sted')
+      ->sourceMigration('os2web_meetings_tax_location');
+    $this->addFieldMapping('field_os2web_base_field_loca_ref:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_base_field_loca_ref:create_term')->defaultValue(TRUE);
 
     $this->addFieldMapping('field_os2web_base_field_organiz', 'field_organization')
       ->sourceMigration('os2web_taxonomies_tax_org');
@@ -240,8 +241,8 @@ class Os2webBorgerDkMigration extends NodeMigration {
     $this->addFieldMapping('field_os2web_borger_dk_image:title', 'field_billede:title');
     $this->addFieldMapping('field_os2web_borger_dk_image:language', 'language');
 
-    $this->addFieldMapping('field_os2web_base_field_spotbox', 'field_indholdsside_spotboxe');
-      // ->sourceMigration('os2web_spotbox');
+    $this->addFieldMapping('field_os2web_base_field_spotbox', 'field_indholdsside_spotboxe')
+      ->sourceMigration('os2web_spotbox_box');
 
     $this->addFieldMapping('field_os2web_base_field_contact', 'field_node_reference_kontaktblok')
       ->sourceMigration('os2web_contact_contact');
@@ -331,6 +332,7 @@ class OS2webContactMigration extends NodeMigration {
     $this->addFieldMapping('field_os2web_contact_field_sunop:language', 'language');
 
     $this->addFieldMapping('field_os2web_contact_field_phone', 'field_phone1');
+
     $this->addFieldMapping('field_os2web_contact_field_zip', 'field_stedpostnr');
     $this->addFieldMapping('field_os2web_contact_field_zip:language', 'language');
 
@@ -393,6 +395,7 @@ class OS2webCPCaseMigration extends NodeMigration {
 
   }
 }
+
 class OS2webCPDocMigration extends NodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
@@ -438,6 +441,7 @@ class OS2webCPDocMigration extends NodeMigration {
     $this->addFieldMapping('field_os2web_cp_service_sysid:language', 'language');
   }
 }
+
 class OS2webBackgroundImageMigration extends NodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
@@ -448,15 +452,19 @@ class OS2webBackgroundImageMigration extends NodeMigration {
     $this->addFieldMapping('field_os2web_frontend_bg_file:language', 'language');
   }
 }
+
 class OS2webHearingsMigration extends NodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
     $this->addFieldMapping('field_os2web_hearings_enddate', 'field_slutdato');
+
     $this->addFieldMapping('field_os2web_hearings_startdate', 'field_startdato');
+
     $this->addFieldMapping('field_os2web_hearings_url', 'field_url');
     $this->addFieldMapping('field_os2web_hearings_url:language', 'language');
   }
 }
+
 class OS2webKulturnauEventMigration extends NodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
@@ -508,23 +516,176 @@ class OS2webKulturnauEventMigration extends NodeMigration {
     $this->addFieldMapping('field_os2web_kulturnaut_time:language', 'language');
   }
 }
+
 class OS2webMeetingMigration extends NodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
   }
 }
+
 class OS2webMeetingBulletAttMigration extends NodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
   }
 }
+
 class OS2webMeetingBulletMigration extends NodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
   }
 }
-// class ExampleMigration extends NodeMigration {
-//   public function __construct(array $arguments) {
-//     parent::__construct($arguments);
-//   }
-// }
+
+class OS2webOfirJobMigration extends NodeMigration {
+  public function __construct(array $arguments) {
+    parent::__construct($arguments);
+
+    $this->addFieldMapping('field_os2web_ofir_job_logo', 'field_logo')
+      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_ofir_job_logo:alt', 'field_logo:alt');
+    $this->addFieldMapping('field_os2web_ofir_job_logo:title', 'field_logo:title');
+    $this->addFieldMapping('field_os2web_ofir_job_logo:language', 'language');
+
+    $this->addFieldMapping('field_os2web_ofir_job_period', 'field_period');
+
+    $this->addFieldMapping('field_os2web_ofir_job_text', 'field_text');
+    $this->addFieldMapping('field_os2web_ofir_job_text:format', 'field_text:format');
+    $this->addFieldMapping('field_os2web_ofir_job_text:language', 'language');
+  }
+}
+
+class OS2webSectionsMigration extends NodeMigration {
+  public function __construct(array $arguments) {
+    parent::__construct($arguments);
+
+
+    $this->addFieldMapping('field_os2web_base_field_struct', 'field_site_structure')
+      ->sourceMigration('os2web_base_tax_site_structure');
+    $this->addFieldMapping('field_os2web_base_field_struct:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_base_field_struct:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_base_field_kle_ref', 'field_termref_kle')
+      ->sourceMigration('os2web_taxonomies_tax_kle');
+    $this->addFieldMapping('field_os2web_base_field_kle_ref:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_base_field_kle_ref:create_term')->defaultValue(TRUE);
+  }
+}
+
+class OS2webSpotboxMigration extends NodeMigration {
+  public function __construct(array $arguments) {
+    parent::__construct($arguments);
+
+    $this->addFieldMapping('field_os2web_spotbox_editor_tags', 'field_editortags')
+      ->sourceMigration('os2web_taxonomies_tax_editor_tag');
+    $this->addFieldMapping('field_os2web_spotbox_editor_tags:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_spotbox_editor_tags:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_spotbox_focus_sect', 'field_fokus_sektionsforside')
+      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_spotbox_focus_sect:language', 'language');
+
+    $this->addFieldMapping('field_os2web_spotbox_lead_image', 'field_lead_image')
+      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_spotbox_lead_image:alt', 'field_lead_image:alt');
+    $this->addFieldMapping('field_os2web_spotbox_lead_image:title', 'field_lead_image:title');
+    $this->addFieldMapping('field_os2web_spotbox_lead_image:language', 'language');
+
+    $this->addFieldMapping('field_os2web_spotbox_organizati', 'field_organization')
+      ->sourceMigration('os2web_taxonomies_tax_org');
+    $this->addFieldMapping('field_os2web_spotbox_organizati:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_spotbox_organizati:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_spotbox_politics', 'field_politics')
+      ->sourceMigration('os2web_taxonomies_tax_politics');
+    $this->addFieldMapping('field_os2web_spotbox_politics:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_spotbox_politics:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_spotbox_promote_to', 'field_promoteto')
+      ->sourceMigration('os2web_base_tax_promoteto');
+    $this->addFieldMapping('field_os2web_spotbox_promote_to:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_spotbox_promote_to:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_spotbox_sitestruct', 'field_site_structure')
+      ->sourceMigration('os2web_base_tax_site_structure');
+    $this->addFieldMapping('field_os2web_spotbox_sitestruct:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_spotbox_sitestruct:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_spotbox_image_tall', 'field_spotbox_image_tall')
+      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_spotbox_image_tall:alt', 'field_spotbox_image_tall:alt');
+    $this->addFieldMapping('field_os2web_spotbox_image_tall:title', 'field_spotbox_image_tall:title');
+    $this->addFieldMapping('field_os2web_spotbox_image_tall:language', 'language');
+
+    $this->addFieldMapping('field_os2web_spotbox_video', 'field_spotbox_video')
+      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_spotbox_video:alt', 'field_spotbox_video:alt');
+    $this->addFieldMapping('field_os2web_spotbox_video:title', 'field_spotbox_video:title');
+    $this->addFieldMapping('field_os2web_spotbox_video:language', 'language');
+
+    $this->addFieldMapping('field_os2web_spotbox_big_image', 'field_stort_billede_spot5')
+      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_spotbox_big_image:alt', 'field_stort_billede_spot5:alt');
+    $this->addFieldMapping('field_os2web_spotbox_big_image:title', 'field_stort_billede_spot5:title');
+    $this->addFieldMapping('field_os2web_spotbox_big_image:language', 'language');
+
+    $this->addFieldMapping('field_os2web_spotbox_ref_kle', 'field_termref_kle')
+      ->sourceMigration('os2web_taxonomies_tax_kle');
+    $this->addFieldMapping('field_os2web_spotbox_ref_kle:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_spotbox_ref_kle:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_spotbox_ref_place', 'field_termref_sted')
+      ->sourceMigration('os2web_meetings_tax_location');
+    $this->addFieldMapping('field_os2web_spotbox_ref_place:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_spotbox_ref_place:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_spotbox_text', 'field_text');
+    $this->addFieldMapping('field_os2web_spotbox_text:language', 'language');
+
+    $this->addFieldMapping('field_os2web_spotbox_url', 'field_url');
+    $this->addFieldMapping('field_os2web_spotbox_url:language', 'language');
+  }
+}
+
+class OS2webWebformMigration extends NodeMigration {
+  public function __construct(array $arguments) {
+    parent::__construct($arguments);
+    $this->addFieldMapping('field_os2web_webform_attach', 'field_webform_attachment')
+      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_webform_attach:description', 'field_webform_attachment:description');
+    $this->addFieldMapping('field_os2web_webform_attach:display', 'field_webform_attachment:display');
+    $this->addFieldMapping('field_os2web_webform_attach:language', 'language');
+
+    $this->addFieldMapping('field_os2web_webform_editortags', 'field_editortags')
+      ->sourceMigration('os2web_taxonomies_tax_editor_tag');
+    $this->addFieldMapping('field_os2web_webform_editortags:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_webform_editortags:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_webform_kle', 'field_termref_kle')
+      ->sourceMigration('os2web_taxonomies_tax_kle');
+    $this->addFieldMapping('field_os2web_webform_kle:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_webform_kle:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_webform_org', 'field_organization')
+      ->sourceMigration('os2web_taxonomies_tax_org');
+    $this->addFieldMapping('field_os2web_webform_org:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_webform_org:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_webform_place', 'field_termref_sted')
+      ->sourceMigration('os2web_meetings_tax_location');
+    $this->addFieldMapping('field_os2web_webform_place:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_webform_place:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_webform_sitestruct', 'field_site_structure')
+      ->sourceMigration('os2web_base_tax_site_structure');
+    $this->addFieldMapping('field_os2web_webform_sitestruct:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_webform_sitestruct:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_webform_sofd', 'field_termref_sofd');
+    $this->addFieldMapping('field_os2web_webform_sofd:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_webform_sofd:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_webform_summary', 'field_resume_long');
+    $this->addFieldMapping('field_os2web_webform_summary:summary', 'field_resume_long:summary');
+    $this->addFieldMapping('field_os2web_webform_summary:format', 'field_resume_long:format');
+    $this->addFieldMapping('field_os2web_webform_summary:language', 'language');
+  }
+}

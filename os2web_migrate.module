@@ -68,7 +68,7 @@ function os2web_migrate_register_migrations() {
     array(
       'description' => t('Migration of vocab committee'),
       'machine_name' => 'os2web_taxonomies_tax_comittee',
-      'source_vocabulary' => 'committee',
+      'source_vocabulary' => 'accadremmcommittee',
       'destination_vocabulary' => 'os2web_taxonomies_tax_comittee',
     ),
     array(
@@ -126,6 +126,26 @@ function os2web_migrate_register_migrations() {
       'machine_name' => 'os2web_cp_service_tax_approved_rules',
       'source_vocabulary' => 'os2web_cp_service_tax_approved_rules',
       'destination_vocabulary' => 'os2web_cp_service_tax_approved_rules',
+    ),
+
+    // os2web_meetings taxonomies.
+    array(
+      'description' => t('Migration of meeting committees'),
+      'machine_name' => 'os2web_meetings_tax_committee',
+      'source_vocabulary' => 'committee',
+      'destination_vocabulary' => 'os2web_meetings_tax_committee',
+    ),
+    array(
+      'description' => t('Migration of meeting locations'),
+      'machine_name' => 'os2web_meetings_tax_location',
+      'source_vocabulary' => 'lokation',
+      'destination_vocabulary' => 'os2web_meetings_tax_location',
+    ),
+    array(
+      'description' => t('Migration of meeting statuses'),
+      'machine_name' => 'os2web_meetings_tax_status',
+      'source_vocabulary' => 'meetin_status',
+      'destination_vocabulary' => 'os2web_meetings_tax_status',
     ),
   );
 
@@ -291,6 +311,42 @@ function os2web_migrate_register_migrations() {
       'machine_name' => 'os2web_meetings_bullet',
       'source_type' => 'bullet_point',
       'destination_type' => 'os2web_meetings_bullet',
+    ),
+
+    // Ofir jobs - os2web_ofir_job
+    array(
+      'class_name' => 'OS2webOfirJobMigration',
+      'description' => t('Migration of ofir jobs'),
+      'machine_name' => 'os2web_ofir_job',
+      'source_type' => 'ofir_job',
+      'destination_type' => 'os2web_ofir_job',
+    ),
+
+    // Sections - os2web_sections
+    array(
+      'class_name' => 'OS2webSectionsMigration',
+      'description' => t('Migration of sections'),
+      'machine_name' => 'os2web_sections_page',
+      'source_type' => 'sektionsside',
+      'destination_type' => 'os2web_sections_page',
+    ),
+
+    // Spotboxes - os2web_spotbox
+    array(
+      'class_name' => 'OS2webSpotboxMigration',
+      'description' => t('Migration of spotboxes'),
+      'machine_name' => 'os2web_spotbox_box',
+      'source_type' => 'spotbox',
+      'destination_type' => 'os2web_spotbox_box',
+    ),
+
+    // Webforms - os2web_webform
+    array(
+      'class_name' => 'OS2webWebformMigration',
+      'description' => t('Migration of webforms'),
+      'machine_name' => 'webform',
+      'source_type' => 'webform',
+      'destination_type' => 'webform',
     ),
 
     // array(
