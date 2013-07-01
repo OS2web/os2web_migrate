@@ -558,8 +558,6 @@ class OS2webOfirJobMigration extends NodeMigration {
     parent::__construct($arguments);
 
     $this->addFieldMapping('field_os2web_ofir_job_logo', 'field_logo');
-    $this->addFieldMapping('field_os2web_ofir_job_logo:alt', 'field_logo:alt');
-    $this->addFieldMapping('field_os2web_ofir_job_logo:title', 'field_logo:title');
     $this->addFieldMapping('field_os2web_ofir_job_logo:language', 'language');
     $this->addFieldMapping('field_os2web_ofir_job_logo:file_class')
       ->defaultValue('MigrateFileFid');
