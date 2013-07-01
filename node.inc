@@ -1,11 +1,20 @@
 <?php
 
+
+define('OS2WEB_MIGRATE_SOURCE_PATH', '/var/www/syddjurs.dev/public_html/sites/default/files');
+
 /**
  * Common mappings for the Drupal 6 node migrations.
  */
 abstract class NodeMigration extends DrupalNode7Migration {
   public function __construct(array $arguments) {
+    $this->sourceFields['language'] = 'und';
     parent::__construct($arguments);
+
+    $this->removeFieldMapping('language');
+    $this->addFieldMapping('language')
+      ->defaultValue('und');
+
   }
 }
 
@@ -17,23 +26,28 @@ class Os2webContentpageMigration extends NodeMigration {
 
     $this->addFieldMapping('field_os2web_base_field_summary', 'field_resume_long');
     $this->addFieldMapping('field_os2web_base_field_summary:summary', 'field_resume_long:summary');
-    $this->addFieldMapping('field_os2web_base_field_summary:language')
-      ->defaultValue('und');
+    $this->addFieldMapping('field_os2web_base_field_summary:language', 'language');
 
-    $this->addFieldMapping('field_os2web_base_field_image', 'field_billede')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_base_field_image', 'field_billede');
     $this->addFieldMapping('field_os2web_base_field_image:alt', 'field_billede:alt');
     $this->addFieldMapping('field_os2web_base_field_image:title', 'field_billede:title');
+    $this->addFieldMapping('field_os2web_base_field_image:language', 'language');
+    $this->addFieldMapping('field_os2web_base_field_image:file_class')
+      ->defaultValue('MigrateFileFid');
 
-    $this->addFieldMapping('field_os2web_base_field_lead_img', 'field_lead_image')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_base_field_lead_img', 'field_lead_image');
     $this->addFieldMapping('field_os2web_base_field_lead_img:alt', 'field_lead_image:alt');
     $this->addFieldMapping('field_os2web_base_field_lead_img:title', 'field_lead_image:title');
+    $this->addFieldMapping('field_os2web_base_field_lead:language', 'language');
+    $this->addFieldMapping('field_os2web_base_field_lead:file_class')
+      ->defaultValue('MigrateFileFid');
 
-    $this->addFieldMapping('field_os2web_base_field_media', 'field_mediafile')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_base_field_media', 'field_mediafile');
     $this->addFieldMapping('field_os2web_base_field_media:display', 'field_mediafile:display');
     $this->addFieldMapping('field_os2web_base_field_media:description', 'field_mediafile:description');
+    $this->addFieldMapping('field_os2web_base_field_media:language', 'language');
+    $this->addFieldMapping('field_os2web_base_field_media:file_class')
+      ->defaultValue('MigrateFileFid');
 
     $this->addFieldMapping('field_os2web_base_field_case', 'field_case');
     $this->addFieldMapping('field_os2web_base_field_doc', 'field_doc');
@@ -98,15 +112,15 @@ class Os2webNewsMigration extends NodeMigration {
 
     $this->addFieldMapping('field_os2web_base_field_summary', 'field_resume_long');
     $this->addFieldMapping('field_os2web_base_field_summary:summary', 'field_resume_long:summary');
-    $this->addFieldMapping('field_os2web_base_field_summary:language')
-      ->defaultValue('und');
+    $this->addFieldMapping('field_os2web_base_field_summary:language', 'language');
     $this->addFieldMapping('field_os2web_base_field_sourceid', 'field_source_id');
     $this->addFieldMapping('field_os2web_base_field_add_info', 'field_additional_info');
 
-    $this->addFieldMapping('field_os2web_base_field_lead_img', 'field_lead_image')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_base_field_lead_img', 'field_lead_image');
     $this->addFieldMapping('field_os2web_base_field_lead_img:alt', 'field_lead_image:alt');
     $this->addFieldMapping('field_os2web_base_field_lead_img:title', 'field_lead_image:title');
+    $this->addFieldMapping('field_os2web_base_field_lead_img:file_class')
+      ->defaultValue('MigrateFileFid');
 
     $this->addFieldMapping('field_os2web_base_field_edi_tags', 'field_editortags')
       ->sourceMigration('os2web_taxonomies_tax_editor_tag');
@@ -152,11 +166,12 @@ class Os2webRotatingImageMigration extends NodeMigration {
     $this->addFieldMapping('field_os2web_base_field_promote:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_base_field_promote:create_term')->defaultValue(TRUE);
 
-    $this->addFieldMapping('field_os2web_base_field_rota_img', 'field_rotate_image')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_base_field_rota_img', 'field_rotate_image');
     $this->addFieldMapping('field_os2web_base_field_rota_img:alt', 'field_rotate_image:alt');
     $this->addFieldMapping('field_os2web_base_field_rota_img:title', 'field_rotate_image:title');
     $this->addFieldMapping('field_os2web_base_field_rota_img:language', 'language');
+    $this->addFieldMapping('field_os2web_base_field_rota_img:file_class')
+      ->defaultValue('MigrateFileFid');
 
     $this->addFieldMapping('field_os2web_base_field_rota_lnk', 'field_rotating_link');
     $this->addFieldMapping('field_os2web_base_field_rota_lnk:title', 'field_rotating_link:title');
@@ -235,11 +250,12 @@ class Os2webBorgerDkMigration extends NodeMigration {
     $this->addFieldMapping('field_os2web_borger_dk_kle:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_borger_dk_kle:create_term')->defaultValue(TRUE);
 
-    $this->addFieldMapping('field_os2web_borger_dk_image', 'field_billede')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_borger_dk_image', 'field_billede');
     $this->addFieldMapping('field_os2web_borger_dk_image:alt', 'field_billede:alt');
     $this->addFieldMapping('field_os2web_borger_dk_image:title', 'field_billede:title');
     $this->addFieldMapping('field_os2web_borger_dk_image:language', 'language');
+    $this->addFieldMapping('field_os2web_borger_dk_image:file_class')
+      ->defaultValue('MigrateFileFid');
 
     $this->addFieldMapping('field_os2web_base_field_spotbox', 'field_indholdsside_spotboxe')
       ->sourceMigration('os2web_spotbox_box');
@@ -255,11 +271,12 @@ class Os2webBorgerDkMigration extends NodeMigration {
 class OS2webCitizenServiceMigration extends NodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
-    $this->addFieldMapping('field_os2web_citizenservices_img', 'field_lead_image')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_citizenservices_img', 'field_lead_image');
     $this->addFieldMapping('field_os2web_citizenservices_img:alt', 'field_lead_image:alt');
     $this->addFieldMapping('field_os2web_citizenservices_img:title', 'field_lead_image:title');
     $this->addFieldMapping('field_os2web_citizenservices_img:language', 'language');
+    $this->addFieldMapping('field_os2web_citizenservices_img:file_class')
+      ->defaultValue('MigrateFileFid');
 
     $this->addFieldMapping('field_os2web_citizenservices_url', 'field_url');
     $this->addFieldMapping('field_os2web_citizenservices_url:language', 'language');
@@ -445,11 +462,12 @@ class OS2webCPDocMigration extends NodeMigration {
 class OS2webBackgroundImageMigration extends NodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
-    $this->addFieldMapping('field_os2web_frontend_bg_file', 'field_side_baggrungsbillede')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_frontend_bg_file', 'field_side_baggrungsbillede');
     $this->addFieldMapping('field_os2web_frontend_bg_file:alt', 'field_side_baggrungsbillede:alt');
     $this->addFieldMapping('field_os2web_frontend_bg_file:title', 'field_side_baggrungsbillede:title');
     $this->addFieldMapping('field_os2web_frontend_bg_file:language', 'language');
+    $this->addFieldMapping('field_os2web_frontend_bg_file:file_class')
+      ->defaultValue('MigrateFileFid');
   }
 }
 
@@ -539,11 +557,12 @@ class OS2webOfirJobMigration extends NodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
-    $this->addFieldMapping('field_os2web_ofir_job_logo', 'field_logo')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_ofir_job_logo', 'field_logo');
     $this->addFieldMapping('field_os2web_ofir_job_logo:alt', 'field_logo:alt');
     $this->addFieldMapping('field_os2web_ofir_job_logo:title', 'field_logo:title');
     $this->addFieldMapping('field_os2web_ofir_job_logo:language', 'language');
+    $this->addFieldMapping('field_os2web_ofir_job_logo:file_class')
+      ->defaultValue('MigrateFileFid');
 
     $this->addFieldMapping('field_os2web_ofir_job_period', 'field_period');
 
@@ -579,15 +598,17 @@ class OS2webSpotboxMigration extends NodeMigration {
     $this->addFieldMapping('field_os2web_spotbox_editor_tags:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_spotbox_editor_tags:create_term')->defaultValue(TRUE);
 
-    $this->addFieldMapping('field_os2web_spotbox_focus_sect', 'field_fokus_sektionsforside')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_spotbox_focus_sect', 'field_fokus_sektionsforside');
     $this->addFieldMapping('field_os2web_spotbox_focus_sect:language', 'language');
+    $this->addFieldMapping('field_os2web_spotbox_focus_sect:file_class')
+      ->defaultValue('MigrateFileFid');
 
-    $this->addFieldMapping('field_os2web_spotbox_lead_image', 'field_lead_image')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_spotbox_lead_image', 'field_lead_image');
     $this->addFieldMapping('field_os2web_spotbox_lead_image:alt', 'field_lead_image:alt');
     $this->addFieldMapping('field_os2web_spotbox_lead_image:title', 'field_lead_image:title');
     $this->addFieldMapping('field_os2web_spotbox_lead_image:language', 'language');
+    $this->addFieldMapping('field_os2web_spotbox_lead_image:file_class')
+      ->defaultValue('MigrateFileFid');
 
     $this->addFieldMapping('field_os2web_spotbox_organizati', 'field_organization')
       ->sourceMigration('os2web_taxonomies_tax_org');
@@ -609,23 +630,26 @@ class OS2webSpotboxMigration extends NodeMigration {
     $this->addFieldMapping('field_os2web_spotbox_sitestruct:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_spotbox_sitestruct:create_term')->defaultValue(TRUE);
 
-    $this->addFieldMapping('field_os2web_spotbox_image_tall', 'field_spotbox_image_tall')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_spotbox_image_tall', 'field_spotbox_image_tall');
     $this->addFieldMapping('field_os2web_spotbox_image_tall:alt', 'field_spotbox_image_tall:alt');
     $this->addFieldMapping('field_os2web_spotbox_image_tall:title', 'field_spotbox_image_tall:title');
     $this->addFieldMapping('field_os2web_spotbox_image_tall:language', 'language');
+    $this->addFieldMapping('field_os2web_spotbox_image_tall:file_class')
+      ->defaultValue('MigrateFileFid');
 
-    $this->addFieldMapping('field_os2web_spotbox_video', 'field_spotbox_video')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_spotbox_video', 'field_spotbox_video');
     $this->addFieldMapping('field_os2web_spotbox_video:alt', 'field_spotbox_video:alt');
     $this->addFieldMapping('field_os2web_spotbox_video:title', 'field_spotbox_video:title');
     $this->addFieldMapping('field_os2web_spotbox_video:language', 'language');
+    $this->addFieldMapping('field_os2web_spotbox_video:file_class')
+      ->defaultValue('MigrateFileFid');
 
-    $this->addFieldMapping('field_os2web_spotbox_big_image', 'field_stort_billede_spot5')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_spotbox_big_image', 'field_stort_billede_spot5');
     $this->addFieldMapping('field_os2web_spotbox_big_image:alt', 'field_stort_billede_spot5:alt');
     $this->addFieldMapping('field_os2web_spotbox_big_image:title', 'field_stort_billede_spot5:title');
     $this->addFieldMapping('field_os2web_spotbox_big_image:language', 'language');
+    $this->addFieldMapping('field_os2web_spotbox_big_image:file_class')
+      ->defaultValue('MigrateFileFid');
 
     $this->addFieldMapping('field_os2web_spotbox_ref_kle', 'field_termref_kle')
       ->sourceMigration('os2web_taxonomies_tax_kle');
@@ -648,11 +672,12 @@ class OS2webSpotboxMigration extends NodeMigration {
 class OS2webWebformMigration extends NodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
-    $this->addFieldMapping('field_os2web_webform_attach', 'field_webform_attachment')
-      ->sourceMigration('Os2webFile');
+    $this->addFieldMapping('field_os2web_webform_attach', 'field_webform_attachment');
     $this->addFieldMapping('field_os2web_webform_attach:description', 'field_webform_attachment:description');
     $this->addFieldMapping('field_os2web_webform_attach:display', 'field_webform_attachment:display');
     $this->addFieldMapping('field_os2web_webform_attach:language', 'language');
+    $this->addFieldMapping('field_os2web_webform_attach:file_class')
+      ->defaultValue('MigrateFileFid');
 
     $this->addFieldMapping('field_os2web_webform_editortags', 'field_editortags')
       ->sourceMigration('os2web_taxonomies_tax_editor_tag');

@@ -6,6 +6,11 @@ Description
 This module provides migration classes used by migrate to migrate between
 old D7 to new OS2web 1.0 D7.
 
+1. Import files manual by copying from legacy dir.
+2. Take a clean dump of the `file_managed` table from your legacy site.
+3. Import into new database. `drush sqlq --file="file_managed.sql"
+4. Migrate
+
 Dependencies
 -----------
 - migrate
