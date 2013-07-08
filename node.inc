@@ -203,8 +203,7 @@ class Os2webSelfserviceLinkMigration extends NodeMigration {
     $this->addFieldMapping('field_os2web_borger_dk_kle:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_borger_dk_kle:create_term')->defaultValue(TRUE);
 
-    $this->addFieldMapping('field_os2web_base_field_type', 'field_selvbetjeningslink_type')
-      ->sourceMigration('os2web_base_contentpage');
+    $this->addFieldMapping('field_os2web_base_field_type', 'field_selvbetjeningslink_type');
 
     $this->addFieldMapping('field_os2web_base_field_grp_id', 'field_gruppe_id');
     $this->addFieldMapping('field_os2web_base_field_grp_id:language', 'language');
