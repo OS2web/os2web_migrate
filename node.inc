@@ -50,38 +50,51 @@ class Os2webContentpageMigration extends NodeMigration {
       ->defaultValue('MigrateFileFid');
 
     $this->addFieldMapping('field_os2web_base_field_case', 'field_case');
+
     $this->addFieldMapping('field_os2web_base_field_doc', 'field_doc');
+
     $this->addFieldMapping('field_os2web_base_field_contact', 'field_node_reference_kontaktblok')
       ->sourceMigration('os2web_contact_contact');
+
     $this->addFieldMapping('field_os2web_base_field_edi_tags', 'field_editortags')
       ->sourceMigration('os2web_taxonomies_tax_editor_tag');
     $this->addFieldMapping('field_os2web_base_field_edi_tags:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_base_field_edi_tags:create_term')->defaultValue(TRUE);
+
     $this->addFieldMapping('field_os2web_base_field_kle_ref', 'field_termref_kle')
       ->sourceMigration('os2web_taxonomies_tax_kle');
     $this->addFieldMapping('field_os2web_base_field_kle_ref:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_base_field_kle_ref:create_term')->defaultValue(TRUE);
+
     $this->addFieldMapping('field_os2web_base_field_loca_ref', 'field_termref_sted')
        ->sourceMigration('os2web_meetings_tax_location');
     $this->addFieldMapping('field_os2web_base_field_loca_ref:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_base_field_loca_ref:create_term')->defaultValue(TRUE);
+
     $this->addFieldMapping('field_os2web_base_field_organiz', 'field_organization')
       ->sourceMigration('os2web_taxonomies_tax_org');
     $this->addFieldMapping('field_os2web_base_field_organiz:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_base_field_organiz:create_term')->defaultValue(TRUE);
+
     $this->addFieldMapping('field_os2web_base_field_politics', 'field_politics')
       ->sourceMigration('os2web_taxonomies_tax_politics');
     $this->addFieldMapping('field_os2web_base_field_politics:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_base_field_politics:create_term')->defaultValue(TRUE);
+
     $this->addFieldMapping('field_os2web_base_field_struct', 'field_site_structure')
       ->sourceMigration('os2web_base_tax_site_structure');
     $this->addFieldMapping('field_os2web_base_field_struct:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_base_field_struct:create_term')->defaultValue(TRUE);
+
     $this->addFieldMapping('field_os2web_base_field_hidlinks', 'field_skjul_relaterede_links');
+
     $this->addFieldMapping('field_os2web_base_field_rotate', 'field_rotate_publish');
+
     $this->addFieldMapping('field_os2web_base_field_selfserv', 'field_noderef_selvbtjn')
       ->sourceMigration('os2web_base_selfservice_link');
+
     $this->addFieldMapping('field_os2web_base_field_sourceid', 'field_source_id');
+
     $this->addFieldMapping('field_os2web_base_field_spotbox', 'field_indholdsside_spotboxe')
       ->sourceMigration('os2web_spotbox_box');
 
