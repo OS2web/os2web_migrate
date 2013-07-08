@@ -189,6 +189,31 @@ class Os2webRotatingImageMigration extends NodeMigration {
 class Os2webSelfserviceLinkMigration extends NodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
+
+    $this->addFieldMapping('field_os2web_base_field_struct', 'field_site_structure')
+      ->sourceMigration('os2web_base_tax_site_structure');
+    $this->addFieldMapping('field_os2web_base_field_struct:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_base_field_struct:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_base_field_ref_node', 'field_attached_node');
+    $this->addFieldMapping('field_os2web_base_field_ref_node:language', 'language');
+
+    $this->addFieldMapping('field_os2web_borger_dk_kle', 'field_termref_kle')
+      ->sourceMigration('os2web_taxonomies_tax_kle');
+    $this->addFieldMapping('field_os2web_borger_dk_kle:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_borger_dk_kle:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_base_field_type', 'field_selvbetjeningslink_type')
+      ->sourceMigration('os2web_base_contentpage');
+
+    $this->addFieldMapping('field_os2web_base_field_grp_id', 'field_gruppe_id');
+    $this->addFieldMapping('field_os2web_base_field_grp_id:language', 'language');
+
+    $this->addFieldMapping('field_os2web_base_field_source', 'field_kilde');
+    $this->addFieldMapping('field_os2web_base_field_source:language', 'language');
+
+    $this->addFieldMapping('field_os2web_base_field_direct', 'field_selvbetjening_direkte');
+    $this->addFieldMapping('field_os2web_base_field_direct:language', 'language');
   }
 }
 
