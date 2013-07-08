@@ -65,6 +65,12 @@ class Os2webMenuLinksMigration extends DrupalMenuLinksMigration {
         $row->menu_name = 'os2web-menu-business-shortcuts';
         break;
       case 'menu-indholdsmenu':
+
+        // Only accept childrens. Top links are from features.
+        if ($row->plid == 0) {
+          return FALSE;
+        }
+
         $row->menu_name = 'os2web-menu-contentmenu';
         break;
       case 'menu-andre-netsteder':
@@ -74,5 +80,40 @@ class Os2webMenuLinksMigration extends DrupalMenuLinksMigration {
         $row->menu_name = 'os2web-menu-business-shortcuts';
         break;
     }
+
+
+    /*
+     * Fun with link_path!
+     *
+     * check for nids
+     *   if pattern 'node/nid', replace nid with handleSourceMigration($node_migrations, $nid)
+     * check for tids
+     *   if pattern 'term/tid', replace tid with handleSourceMigration($term_migrations, $tid)
+     * check for potential alias (after basepath, I believe)
+     *   if (handleSourceMigration($path_migration, $potentialalias), replace potentialalias with result
+     */
+
+    $matches = array();
+    $value = '';
+
+    // NIDs first
+    if (!empty($this->node_migrations)) {
+      // Grabs numbers preceded by 'node/', followed by end of string or '/'
+      // eg: 'node/63' -> '63', 'node/17/edit' -> '17', 'node/53ea' -> NULL
+      //
+      // @todo: extend the lookbehind so it returns NULL for inputs like 'awetnode/34'
+      $regex_nid = "/(?<=node\/)[\d]+(?=$|\/)/";
+
+      if (preg_match($regex_nid, $row->link_path, $matches)) {
+        if ($value = $this->handleSourceMigration($this->node_migrations, $matches[0])) {
+          $new_path = preg_replace('/' . $matches[0] . '/', $value, $row->link_path);
+          if ($new_path) {
+            $row->link_path = $new_path;
+          }
+        }
+      }
+    }
+
+    return TRUE;
   }
 }
