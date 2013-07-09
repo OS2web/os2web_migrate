@@ -65,12 +65,6 @@ class Os2webMenuLinksMigration extends DrupalMenuLinksMigration {
         $row->menu_name = 'os2web-menu-business-shortcuts';
         break;
       case 'menu-indholdsmenu':
-
-        // Only accept childrens. Top links are from features.
-        if ($row->plid == 0) {
-          return FALSE;
-        }
-
         $row->menu_name = 'os2web-menu-contentmenu';
         break;
       case 'menu-andre-netsteder':
@@ -78,6 +72,14 @@ class Os2webMenuLinksMigration extends DrupalMenuLinksMigration {
         break;
       case 'menu-erhverv-genveje2':
         $row->menu_name = 'os2web-menu-business-shortcuts';
+        break;
+
+      // All menus we dont want to be migrated from source.
+      case 'management':
+      case 'menu-top-menu':
+      case 'navigation':
+      case 'user-menu':
+        return FALSE;
         break;
     }
 
