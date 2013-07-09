@@ -113,6 +113,29 @@ class Os2webMenuLinksMigration extends DrupalMenuLinksMigration {
             $row->link_path = $new_path;
           }
         }
+        return TRUE;
+      }
+    }
+
+    $matches = array();
+    $value = '';
+
+    // TIDs next
+    if (!empty($this->term_migrations)) {
+      // Grabs numbers preceded by 'node/', followed by end of string or '/'
+      // eg: 'taxonomy/term/63' -> '63', 'taxonomy/term/17/edit' -> '17', 'taxonomy/term/53ea' -> NULL
+      //
+      // @todo: extend the lookbehind so it returns NULL for inputs like 'awetnode/34'
+      $regex_tid = "/(?<=taxonomy\/term\/)[\d]+(?=$|\/)/";
+
+      if (preg_match($regex_tid, $row->link_path, $matches)) {
+        if ($value = $this->handleSourceMigration($this->term_migrations, $matches[0])) {
+          $new_path = preg_replace('/' . $matches[0] . '/', $value, $row->link_path);
+          if ($new_path) {
+            $row->link_path = $new_path;
+          }
+        }
+        return TRUE;
       }
     }
 
