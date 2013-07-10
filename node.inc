@@ -6,20 +6,21 @@ define('OS2WEB_MIGRATE_SOURCE_PATH', '/var/www/syddjurs.dev/public_html/sites/de
 /**
  * Common mappings for the Drupal 6 node migrations.
  */
-abstract class NodeMigration extends DrupalNode7Migration {
+abstract class Os2webNodeMigration extends DrupalNode7Migration {
   public function __construct(array $arguments) {
     $this->sourceFields['language'] = 'und';
+    $this->defaultLanguage = 'und';
     parent::__construct($arguments);
 
     $this->removeFieldMapping('language');
     $this->addFieldMapping('language')
-      ->defaultValue('und');
+      ->defaultValue($this->defaultLanguage);
 
   }
 }
 
 
-class Os2webContentpageMigration extends NodeMigration {
+class Os2webContentpageMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
 
     parent::__construct($arguments);
@@ -101,19 +102,19 @@ class Os2webContentpageMigration extends NodeMigration {
   }
 }
 
-class Os2webGalleryMigration extends NodeMigration {
+class Os2webGalleryMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
   }
 }
 
-class Os2webIframeMigration extends NodeMigration {
+class Os2webIframeMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
   }
 }
 
-class Os2webNewsMigration extends NodeMigration {
+class Os2webNewsMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
     $this->addFieldMapping('field_os2web_base_field_rel_subj', 'field_related_tema');
@@ -170,7 +171,7 @@ class Os2webNewsMigration extends NodeMigration {
   }
 }
 
-class Os2webRotatingImageMigration extends NodeMigration {
+class Os2webRotatingImageMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
@@ -199,7 +200,7 @@ class Os2webRotatingImageMigration extends NodeMigration {
   }
 }
 
-class Os2webSelfserviceLinkMigration extends NodeMigration {
+class Os2webSelfserviceLinkMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
@@ -230,13 +231,13 @@ class Os2webSelfserviceLinkMigration extends NodeMigration {
   }
 }
 
-class Os2webMediaMigration extends NodeMigration {
+class Os2webMediaMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
   }
 }
 
-class Os2webBorgerDkMigration extends NodeMigration {
+class Os2webBorgerDkMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
     $this->addFieldMapping('field_os2web_borger_dk_borgerurl', 'field_os2web_borger_dk_borgerurl');
@@ -306,23 +307,20 @@ class Os2webBorgerDkMigration extends NodeMigration {
    }
 }
 
-class OS2webCitizenServiceMigration extends NodeMigration {
+class OS2webCitizenServiceMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
+
     $this->addFieldMapping('field_os2web_citizenservices_img', 'field_lead_image');
-    $this->addFieldMapping('field_os2web_citizenservices_img:alt', 'field_lead_image:alt');
-    $this->addFieldMapping('field_os2web_citizenservices_img:title', 'field_lead_image:title');
-    $this->addFieldMapping('field_os2web_citizenservices_img:language', 'language');
     $this->addFieldMapping('field_os2web_citizenservices_img:file_class')
       ->defaultValue('MigrateFileFid');
 
-    $this->addFieldMapping('field_os2web_citizenservices_url', 'field_url');
-    $this->addFieldMapping('field_os2web_citizenservices_url:language', 'language');
-
+    $this->addFieldMapping('field_os2web_citizenservices_url')
+      ->defaultValue('ANders');
   }
 }
 
-class OS2webContactMigration extends NodeMigration {
+class OS2webContactMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
@@ -397,7 +395,7 @@ class OS2webContactMigration extends NodeMigration {
   }
 }
 
-class OS2webCPCaseMigration extends NodeMigration {
+class OS2webCPCaseMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
@@ -451,7 +449,7 @@ class OS2webCPCaseMigration extends NodeMigration {
   }
 }
 
-class OS2webCPDocMigration extends NodeMigration {
+class OS2webCPDocMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
@@ -497,7 +495,7 @@ class OS2webCPDocMigration extends NodeMigration {
   }
 }
 
-class OS2webBackgroundImageMigration extends NodeMigration {
+class OS2webBackgroundImageMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
     $this->addFieldMapping('field_os2web_frontend_bg_file', 'field_side_baggrungsbillede');
@@ -509,7 +507,7 @@ class OS2webBackgroundImageMigration extends NodeMigration {
   }
 }
 
-class OS2webHearingsMigration extends NodeMigration {
+class OS2webHearingsMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
     $this->addFieldMapping('field_os2web_hearings_enddate', 'field_slutdato');
@@ -521,7 +519,7 @@ class OS2webHearingsMigration extends NodeMigration {
   }
 }
 
-class OS2webKulturnauEventMigration extends NodeMigration {
+class OS2webKulturnauEventMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
@@ -573,25 +571,25 @@ class OS2webKulturnauEventMigration extends NodeMigration {
   }
 }
 
-class OS2webMeetingMigration extends NodeMigration {
+class OS2webMeetingMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
   }
 }
 
-class OS2webMeetingBulletAttMigration extends NodeMigration {
+class OS2webMeetingBulletAttMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
   }
 }
 
-class OS2webMeetingBulletMigration extends NodeMigration {
+class OS2webMeetingBulletMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
   }
 }
 
-class OS2webOfirJobMigration extends NodeMigration {
+class OS2webOfirJobMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
@@ -608,7 +606,7 @@ class OS2webOfirJobMigration extends NodeMigration {
   }
 }
 
-class OS2webSectionsMigration extends NodeMigration {
+class OS2webSectionsMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
@@ -625,7 +623,7 @@ class OS2webSectionsMigration extends NodeMigration {
   }
 }
 
-class OS2webSpotboxMigration extends NodeMigration {
+class OS2webSpotboxMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
@@ -705,7 +703,7 @@ class OS2webSpotboxMigration extends NodeMigration {
   }
 }
 
-class OS2webWebformMigration extends NodeMigration {
+class OS2webWebformMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
     $this->addFieldMapping('field_os2web_webform_attach', 'field_webform_attachment');
