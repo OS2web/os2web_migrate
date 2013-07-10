@@ -43,12 +43,14 @@ function os2web_migrate_register_migrations() {
 
     // Os2web_base.
     array(
+      'class_name' => 'Os2webSiteStructMigration',
       'description' => t('Migration of vocab site structure'),
       'machine_name' => 'os2web_base_tax_site_structure',
       'source_vocabulary' => 'site_struktur',
       'destination_vocabulary' => 'os2web_base_tax_site_structure',
     ),
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of vocab promte to'),
       'machine_name' => 'os2web_base_tax_promoteto',
       'source_vocabulary' => 'forfrem_til',
@@ -58,54 +60,63 @@ function os2web_migrate_register_migrations() {
     // Os2web_taxonomies.
 
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of vocab committee'),
       'machine_name' => 'os2web_taxonomies_tax_comittee',
       'source_vocabulary' => 'accadremmcommittee',
       'destination_vocabulary' => 'os2web_taxonomies_tax_comittee',
     ),
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of vocab editor tags'),
       'machine_name' => 'os2web_taxonomies_tax_editor_tag',
       'source_vocabulary' => 'redaktoertags',
       'destination_vocabulary' => 'os2web_taxonomies_tax_editor_tag',
     ),
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of vocab kle'),
       'machine_name' => 'os2web_taxonomies_tax_kle',
       'source_vocabulary' => 'kle',
       'destination_vocabulary' => 'os2web_taxonomies_tax_kle',
     ),
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of vocab organisation'),
       'machine_name' => 'os2web_taxonomies_tax_org',
       'source_vocabulary' => 'organisation',
       'destination_vocabulary' => 'os2web_taxonomies_tax_org',
     ),
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of vocab places'),
       'machine_name' => 'os2web_taxonomies_tax_places',
       'source_vocabulary' => 'egennavne_stedord',
       'destination_vocabulary' => 'os2web_taxonomies_tax_places',
     ),
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of vocab politics'),
       'machine_name' => 'os2web_taxonomies_tax_politics',
       'source_vocabulary' => 'politik',
       'destination_vocabulary' => 'os2web_taxonomies_tax_politics',
     ),
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of vocab portal category'),
       'machine_name' => 'os2web_taxonomies_tax_portal_cat',
       'source_vocabulary' => 'portalkategori',
       'destination_vocabulary' => 'os2web_taxonomies_tax_portal_cat',
     ),
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of vocab user positions'),
       'machine_name' => 'os2web_taxonomies_tax_user_pos',
       'source_vocabulary' => 'user_position',
       'destination_vocabulary' => 'os2web_taxonomies_tax_user_pos',
     ),
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of vocab tags'),
       'machine_name' => 'tags',
       'source_vocabulary' => 'tags',
@@ -114,6 +125,7 @@ function os2web_migrate_register_migrations() {
 
     // os2web_cp_case taxonomies.
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of CP approved rules'),
       'machine_name' => 'os2web_cp_service_tax_approved_rules',
       'source_vocabulary' => 'os2web_cp_service_tax_approved_rules',
@@ -122,18 +134,21 @@ function os2web_migrate_register_migrations() {
 
     // os2web_meetings taxonomies.
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of meeting committees'),
       'machine_name' => 'os2web_meetings_tax_committee',
       'source_vocabulary' => 'committee',
       'destination_vocabulary' => 'os2web_meetings_tax_committee',
     ),
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of meeting locations'),
       'machine_name' => 'os2web_meetings_tax_location',
       'source_vocabulary' => 'lokation',
       'destination_vocabulary' => 'os2web_meetings_tax_location',
     ),
     array(
+      'class_name' => 'DrupalTerm7Migration',
       'description' => t('Migration of meeting statuses'),
       'machine_name' => 'os2web_meetings_tax_status',
       'source_vocabulary' => 'meetin_status',
@@ -146,7 +161,6 @@ function os2web_migrate_register_migrations() {
   // first, we want to make sure it's listed first so the vocubularies are
   // listed right ahead of the node migrations.
   $common_vocabulary_arguments = $common_arguments + array(
-    'class_name' => 'DrupalTerm7Migration',
     'soft_dependencies' => array('Os2webUser'),
   );
   foreach ($vocabulary_arguments as $arguments) {
