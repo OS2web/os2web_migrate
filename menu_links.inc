@@ -73,6 +73,9 @@ class Os2webMenuLinksMigration extends DrupalMenuLinksMigration {
       case 'menu-erhverv-genveje2':
         $row->menu_name = 'os2web-menu-business-shortcuts';
         break;
+      case 'main-menu':
+        $row->menu_name = 'os2web-main-menu';
+        break;
 
       // All menus we dont want to be migrated from source.
       case 'management':
