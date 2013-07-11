@@ -169,6 +169,14 @@ function os2web_migrate_register_migrations() {
                                  $arguments);
   }
 
+    // Required in order to update nids in link_path.
+    $node_migrations =  array(
+      'os2web_base_contentpage',
+      'os2web_base_news',
+      'os2web_borger_dk_article',
+      'os2web_ofir_job',
+      'webform',
+    );
   // Node migrations - each has its own class derived from the migrate_d2d class,
   // specifying its particular field mappings and transformations. source_type
   // and destination_type are required arguments.
@@ -214,6 +222,7 @@ function os2web_migrate_register_migrations() {
       'machine_name' => 'os2web_base_rotating_image',
       'source_type' => 'rotating_image',
       'destination_type' => 'os2web_base_rotating_image',
+      'node_migrations' => $node_migrations,
     ),
     array(
       'class_name' => 'Os2webSelfserviceLinkMigration',
@@ -246,6 +255,7 @@ function os2web_migrate_register_migrations() {
       'machine_name' => 'os2web_citizenservices_service',
       'source_type' => 'borgerservices',
       'destination_type' => 'os2web_citizenservices_service',
+      'node_migrations' => $node_migrations,
     ),
 
     // Contact block nodes - os2web_contact.
@@ -349,6 +359,7 @@ function os2web_migrate_register_migrations() {
       'machine_name' => 'os2web_spotbox_box',
       'source_type' => 'spotbox',
       'destination_type' => 'os2web_spotbox_box',
+      'node_migrations' => $node_migrations,
     ),
 
     // Webforms - os2web_webform

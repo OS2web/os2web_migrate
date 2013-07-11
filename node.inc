@@ -198,6 +198,43 @@ class Os2webRotatingImageMigration extends Os2webNodeMigration {
     $this->addFieldMapping('field_os2web_base_field_struct:source_type')->defaultValue('tid');
     $this->addFieldMapping('field_os2web_base_field_struct:create_term')->defaultValue(TRUE);
   }
+
+  public function prepareRow($row)
+  {
+
+    /*
+     * Fun with link_path!
+     *
+     * check for nids
+     *   if pattern 'node/nid', replace nid with handleSourceMigration($node_migrations, $nid)
+     * check for tids
+     *   if pattern 'term/tid', replace tid with handleSourceMigration($term_migrations, $tid)
+     * check for potential alias (after basepath, I believe)
+     *   if (handleSourceMigration($path_migration, $potentialalias), replace potentialalias with result
+     */
+
+    $matches = array();
+    $value = '';
+
+    // NIDs first
+    if (!empty($this->node_migrations)) {
+      // Grabs numbers preceded by 'node/', followed by end of string or '/'
+      // eg: 'node/63' -> '63', 'node/17/edit' -> '17', 'node/53ea' -> NULL
+      //
+      // @todo: extend the lookbehind so it returns NULL for inputs like 'awetnode/34'
+      $regex_nid = "/(?<=node\/)[\d]+(?=$|\/)/";
+
+      if (preg_match($regex_nid, $row->field_rotating_link, $matches)) {
+        if ($value = $this->handleSourceMigration($this->node_migrations, $matches[0])) {
+          $new_path = preg_replace('/' . $matches[0] . '/', $value, $row->field_rotating_link);
+          if ($new_path) {
+            $row->field_rotating_link = $new_path;
+          }
+        }
+        return TRUE;
+      }
+    }
+  }
 }
 
 class Os2webSelfserviceLinkMigration extends Os2webNodeMigration {
@@ -315,8 +352,44 @@ class OS2webCitizenServiceMigration extends Os2webNodeMigration {
     $this->addFieldMapping('field_os2web_citizenservices_img:file_class')
       ->defaultValue('MigrateFileFid');
 
-    $this->addFieldMapping('field_os2web_citizenservices_url')
-      ->defaultValue('ANders');
+    $this->addFieldMapping('field_os2web_citizenservices_url', 'field_url');
+  }
+
+  public function prepareRow($row)
+  {
+
+    /*
+     * Fun with link_path!
+     *
+     * check for nids
+     *   if pattern 'node/nid', replace nid with handleSourceMigration($node_migrations, $nid)
+     * check for tids
+     *   if pattern 'term/tid', replace tid with handleSourceMigration($term_migrations, $tid)
+     * check for potential alias (after basepath, I believe)
+     *   if (handleSourceMigration($path_migration, $potentialalias), replace potentialalias with result
+     */
+
+    $matches = array();
+    $value = '';
+
+    // NIDs first
+    if (!empty($this->node_migrations)) {
+      // Grabs numbers preceded by 'node/', followed by end of string or '/'
+      // eg: 'node/63' -> '63', 'node/17/edit' -> '17', 'node/53ea' -> NULL
+      //
+      // @todo: extend the lookbehind so it returns NULL for inputs like 'awetnode/34'
+      $regex_nid = "/(?<=node\/)[\d]+(?=$|\/)/";
+
+      if (preg_match($regex_nid, $row->field_url, $matches)) {
+        if ($value = $this->handleSourceMigration($this->node_migrations, $matches[0])) {
+          $new_path = preg_replace('/' . $matches[0] . '/', $value, $row->field_url);
+          if ($new_path) {
+            $row->field_url = $new_path;
+          }
+        }
+        return TRUE;
+      }
+    }
   }
 }
 
@@ -700,6 +773,43 @@ class OS2webSpotboxMigration extends Os2webNodeMigration {
 
     $this->addFieldMapping('field_os2web_spotbox_url', 'field_url');
     $this->addFieldMapping('field_os2web_spotbox_url:language', 'language');
+  }
+
+  public function prepareRow($row)
+  {
+
+    /*
+     * Fun with link_path!
+     *
+     * check for nids
+     *   if pattern 'node/nid', replace nid with handleSourceMigration($node_migrations, $nid)
+     * check for tids
+     *   if pattern 'term/tid', replace tid with handleSourceMigration($term_migrations, $tid)
+     * check for potential alias (after basepath, I believe)
+     *   if (handleSourceMigration($path_migration, $potentialalias), replace potentialalias with result
+     */
+
+    $matches = array();
+    $value = '';
+
+    // NIDs first
+    if (!empty($this->node_migrations)) {
+      // Grabs numbers preceded by 'node/', followed by end of string or '/'
+      // eg: 'node/63' -> '63', 'node/17/edit' -> '17', 'node/53ea' -> NULL
+      //
+      // @todo: extend the lookbehind so it returns NULL for inputs like 'awetnode/34'
+      $regex_nid = "/(?<=node\/)[\d]+(?=$|\/)/";
+
+      if (preg_match($regex_nid, $row->field_os2web_spotbox_url, $matches)) {
+        if ($value = $this->handleSourceMigration($this->node_migrations, $matches[0])) {
+          $new_path = preg_replace('/' . $matches[0] . '/', $value, $row->field_os2web_spotbox_url);
+          if ($new_path) {
+            $row->field_os2web_spotbox_url = $new_path;
+          }
+        }
+        return TRUE;
+      }
+    }
   }
 }
 
