@@ -1,21 +1,11 @@
 <?php
 
-
-define('OS2WEB_MIGRATE_SOURCE_PATH', '/var/www/syddjurs.dev/public_html/sites/default/files');
-
 /**
- * Common mappings for the Drupal 6 node migrations.
+ * Common mappings for the Drupal 7 node migrations.
  */
 abstract class Os2webNodeMigration extends DrupalNode7Migration {
   public function __construct(array $arguments) {
-    $this->sourceFields['language'] = 'und';
-    $this->defaultLanguage = 'und';
     parent::__construct($arguments);
-
-    $this->removeFieldMapping('language');
-    $this->addFieldMapping('language')
-      ->defaultValue($this->defaultLanguage);
-
   }
 }
 
