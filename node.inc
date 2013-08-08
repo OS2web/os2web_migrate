@@ -212,6 +212,10 @@ class Os2webRotatingImageMigration extends Os2webNodeMigration {
   public function prepareRow($row)
   {
 
+    if (parent::prepareRow($row) === FALSE) {
+      return FALSE;
+    }
+
     /*
      * Fun with link_path!
      *
@@ -371,6 +375,10 @@ class OS2webCitizenServiceMigration extends Os2webNodeMigration {
 
   public function prepareRow($row)
   {
+
+    if (parent::prepareRow($row) === FALSE) {
+      return FALSE;
+    }
 
     /*
      * Fun with link_path!
@@ -805,6 +813,10 @@ class OS2webSpotboxMigration extends Os2webNodeMigration {
 
   public function prepareRow($row)
   {
+
+    if (parent::prepareRow($row) === FALSE) {
+      return FALSE;
+    }
 
     /*
      * Fun with link_path!
