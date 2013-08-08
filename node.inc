@@ -221,7 +221,7 @@ class Os2webRotatingImageMigration extends Os2webNodeMigration {
     $value = '';
 
     // NIDs first
-    if (!empty($this->node_migrations)) {
+    if (!empty($this->arguments->node_migrations)) {
       // Grabs numbers preceded by 'node/', followed by end of string or '/'
       // eg: 'node/63' -> '63', 'node/17/edit' -> '17', 'node/53ea' -> NULL
       //
@@ -229,7 +229,7 @@ class Os2webRotatingImageMigration extends Os2webNodeMigration {
       $regex_nid = "/(?<=node\/)[\d]+(?=$|\/)/";
 
       if (preg_match($regex_nid, $row->field_rotating_link, $matches)) {
-        if ($value = $this->handleSourceMigration($this->node_migrations, $matches[0])) {
+        if ($value = $this->handleSourceMigration($this->arguments->node_migrations, $matches[0])) {
           $new_path = preg_replace('/' . $matches[0] . '/', $value, $row->field_rotating_link);
           if ($new_path) {
             $row->field_rotating_link = $new_path;
@@ -385,7 +385,7 @@ class OS2webCitizenServiceMigration extends Os2webNodeMigration {
     $value = '';
 
     // NIDs first
-    if (!empty($this->node_migrations)) {
+    if (!empty($this->arguments->node_migrations)) {
       // Grabs numbers preceded by 'node/', followed by end of string or '/'
       // eg: 'node/63' -> '63', 'node/17/edit' -> '17', 'node/53ea' -> NULL
       //
@@ -393,7 +393,7 @@ class OS2webCitizenServiceMigration extends Os2webNodeMigration {
       $regex_nid = "/(?<=node\/)[\d]+(?=$|\/)/";
 
       if (preg_match($regex_nid, $row->field_url, $matches)) {
-        if ($value = $this->handleSourceMigration($this->node_migrations, $matches[0])) {
+        if ($value = $this->handleSourceMigration($this->arguments->node_migrations, $matches[0])) {
           $new_path = preg_replace('/' . $matches[0] . '/', $value, $row->field_url);
           if ($new_path) {
             $row->field_url = $new_path;
@@ -823,7 +823,7 @@ class OS2webSpotboxMigration extends Os2webNodeMigration {
     $value = '';
 
     // NIDs first
-    if (!empty($this->node_migrations)) {
+    if (!empty($this->arguments->node_migrations)) {
       // Grabs numbers preceded by 'node/', followed by end of string or '/'
       // eg: 'node/63' -> '63', 'node/17/edit' -> '17', 'node/53ea' -> NULL
       //
@@ -831,7 +831,7 @@ class OS2webSpotboxMigration extends Os2webNodeMigration {
       $regex_nid = "/(?<=node\/)[\d]+(?=$|\/)/";
 
       if (preg_match($regex_nid, $row->field_os2web_spotbox_url, $matches)) {
-        if ($value = $this->handleSourceMigration($this->node_migrations, $matches[0])) {
+        if ($value = $this->handleSourceMigration($this->arguments->node_migrations, $matches[0])) {
           $new_path = preg_replace('/' . $matches[0] . '/', $value, $row->field_os2web_spotbox_url);
           if ($new_path) {
             $row->field_os2web_spotbox_url = $new_path;
