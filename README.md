@@ -13,8 +13,15 @@ old D7 to new OS2web 1.0 D7.
 
 Dependencies
 -----------
-- migrate
-- migrate_d2d
+- migrate (2.6-rc1)
+- migrate_d2d (2.1-beta1)
+
+Patches
+-----------
+These patches are needed in some cases.
+
+Expire module:
+https://drupal.org/files/1668584-fix-undefined-index-language.patch
 
 Installation
 -----------
