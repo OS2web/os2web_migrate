@@ -96,6 +96,47 @@ class Os2webContentpageMigration extends Os2webNodeMigration {
       ->sourceMigration('os2web_spotbox_box');
 
   }
+
+  public function prepareRow($row)
+  {
+
+    if (parent::prepareRow($row) === FALSE) {
+      return FALSE;
+    }
+
+    /*
+     * Fun with link_path!
+     *
+     * check for nids
+     *   if pattern 'node/nid', replace nid with handleSourceMigration($node_migrations, $nid)
+     * check for tids
+     *   if pattern 'term/tid', replace tid with handleSourceMigration($term_migrations, $tid)
+     * check for potential alias (after basepath, I believe)
+     *   if (handleSourceMigration($path_migration, $potentialalias), replace potentialalias with result
+     */
+
+    $matches = array();
+    $value = '';
+
+    // NIDs first
+    if (!empty($this->arguments['node_migrations'])) {
+      // Grabs numbers preceded by 'node/', followed by end of string or '/'
+      // eg: 'node/63' -> '63', 'node/17/edit' -> '17', 'node/53ea' -> NULL
+      //
+      // @todo: extend the lookbehind so it returns NULL for inputs like 'awetnode/34'
+      $regex_nid = "/(?<=node\/)[\d]+(?=$|\/)/";
+
+      if (preg_match($regex_nid, $row->field_noderef_selvbtjn[0], $matches)) {
+        if ($value = $this->handleSourceMigration($this->arguments['node_migrations'], $matches[0])) {
+          $new_path = preg_replace('/' . $matches[0] . '/', $value, $row->field_noderef_selvbtjn[0]);
+          if ($new_path) {
+            $row->field_noderef_selvbtjn[0] = $new_path;
+          }
+        }
+        return TRUE;
+      }
+    }
+  }
 }
 
 class Os2webGalleryMigration extends Os2webNodeMigration {
