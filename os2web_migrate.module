@@ -205,13 +205,13 @@ function os2web_migrate_register_migrations() {
     //   'source_type' => 'gallery',
     //   'destination_type' => 'os2web_base_gallery',
     // ),
-    // array(
-    //   'class_name' => 'Os2webIframeMigration',
-    //   'description' => t('Migration of iframes'),
-    //   'machine_name' => 'os2web_base_iframe',
-    //   'source_type' => 'iframe',
-    //   'destination_type' => 'os2web_base_iframe',
-    // ),
+    array(
+      'class_name' => 'Os2webIframeMigration',
+      'description' => t('Migration of iframes'),
+      'machine_name' => 'os2web_base_iframe',
+      'source_type' => 'iframe_selvbetjeningsl_sning_mm',
+      'destination_type' => 'os2web_base_iframe',
+    ),
     array(
       'class_name' => 'Os2webNewsMigration',
       'description' => t('Migration of news'),

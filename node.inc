@@ -46,9 +46,11 @@ class Os2webContentpageMigration extends Os2webNodeMigration {
     $this->addFieldMapping('field_os2web_base_field_media:preserve_files')
       ->defaultValue(TRUE);
 
-    $this->addFieldMapping('field_os2web_base_field_case', 'field_case');
+    $this->addFieldMapping('field_os2web_base_field_case', 'field_case')
+      ->defaultValue('');
 
-    $this->addFieldMapping('field_os2web_base_field_doc', 'field_doc');
+    $this->addFieldMapping('field_os2web_base_field_doc', 'field_doc')
+      ->defaultValue('');
 
     $this->addFieldMapping('field_os2web_base_field_contact', 'field_node_reference_kontaktblok')
       ->sourceMigration('os2web_contact_contact');
@@ -148,6 +150,40 @@ class Os2webGalleryMigration extends Os2webNodeMigration {
 class Os2webIframeMigration extends Os2webNodeMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
+
+    $this->addFieldMapping('field_os2web_base_field_edi_tags', 'field_editortags')
+      ->sourceMigration('os2web_taxonomies_tax_editor_tag');
+    $this->addFieldMapping('field_os2web_base_field_edi_tags:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_base_field_edi_tags:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_base_field_iframe', 'field_iframe_url');
+    $this->addFieldMapping('field_os2web_base_field_iframe:language', 'language');
+
+    $this->addFieldMapping('field_os2web_base_field_text', 'field_text');
+    $this->addFieldMapping('field_os2web_base_field_text:language', 'language');
+
+    $this->addFieldMapping('field_os2web_base_field_organiz', 'field_organization')
+      ->sourceMigration('os2web_taxonomies_tax_org');
+    $this->addFieldMapping('field_os2web_base_field_organiz:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_base_field_organiz:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_base_field_politics', 'field_politics')
+      ->sourceMigration('os2web_taxonomies_tax_politics');
+    $this->addFieldMapping('field_os2web_base_field_politics:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_base_field_politics:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_base_field_sourceid', 'field_source_id');
+
+    $this->addFieldMapping('field_os2web_base_field_kle_ref', 'field_termref_kle')
+      ->sourceMigration('os2web_taxonomies_tax_kle');
+    $this->addFieldMapping('field_os2web_base_field_kle_ref:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_base_field_kle_ref:create_term')->defaultValue(TRUE);
+
+    $this->addFieldMapping('field_os2web_base_field_loca_ref', 'field_termref_sted')
+       ->sourceMigration('os2web_meetings_tax_location');
+    $this->addFieldMapping('field_os2web_base_field_loca_ref:source_type')->defaultValue('tid');
+    $this->addFieldMapping('field_os2web_base_field_loca_ref:create_term')->defaultValue(TRUE);
+
   }
 }
 
