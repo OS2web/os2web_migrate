@@ -26,10 +26,10 @@ abstract class Os2webNodeMigration extends DrupalNode7Migration {
       // @todo: extend the lookbehind so it returns NULL for inputs like 'awetnode/34'.
       $regex_nid = "/(?<=node\/)[\d]+(?=$|\/)/";
 
-      if (preg_match($regex_nid, $row->body[0], $matches)) {
+      if (preg_match_all($regex_nid, $row->body[0], $matches, PREG_SET_ORDER)) {
         foreach ($matches as $match) {
-          if ($value = $this->handleSourceMigration($this->arguments['node_migrations'], $match)) {
-            $row->body[0] = str_replace('node/' . $match, 'node/' . $value, $row->body[0]);
+          if ($value = $this->handleSourceMigration($this->arguments['node_migrations'], $match[0])$
+            $row->body[0] = str_replace('node/' . $match[0], 'node/' . $value, $row->body[0]);
           }
         }
       }
@@ -37,6 +37,7 @@ abstract class Os2webNodeMigration extends DrupalNode7Migration {
     return TRUE;
   }
 }
+
 
 
 class Os2webContentpageMigration extends Os2webNodeMigration {
