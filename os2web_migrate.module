@@ -192,9 +192,17 @@ function os2web_migrate_register_migrations() {
       'dependencies' => array(
         'os2web_base_selfservice_link',
         'os2web_contact_contact',
-        'os2web_spotbox_box'
+        'os2web_spotbox_box',
       ),
-      'node_migrations' => $node_migrations,
+      'node_migrations' => array(
+        'os2web_base_selfservice_link',
+        'os2web_base_contentpage',
+        'os2web_base_iframe',
+        'os2web_base_news',
+        'os2web_borger_dk_article',
+        'os2web_ofir_job',
+        'webform',
+      ),
     ),
     // array(
     //   'class_name' => 'Os2webGalleryMigration',
