@@ -28,7 +28,7 @@ abstract class Os2webNodeMigration extends DrupalNode7Migration {
 
       if (preg_match_all($regex_nid, $row->body[0], $matches, PREG_SET_ORDER)) {
         foreach ($matches as $match) {
-          if ($value = $this->handleSourceMigration($this->arguments['node_migrations'], $match[0])
+          if ($value = $this->handleSourceMigration($this->arguments['node_migrations'], $match[0])) {
             $row->body[0] = str_replace('node/' . $match[0], 'node/' . $value, $row->body[0]);
           }
         }
