@@ -30,6 +30,7 @@ function os2web_migrate_register_migrations() {
   $user_arguments = $common_arguments + array(
     'description' => t('Migration of users'),
     'machine_name' => 'Os2webUser',
+    'role_migration' => 'Os2webRole',
   );
 
   // We just use the migrate_d2d D6 migration class as-is.
@@ -448,4 +449,11 @@ function os2web_migrate_register_migrations() {
   );
   Migration::registerMigration('Os2webMenuLinksMigration', $menu_links_arguments['machine_name'],
                                $menu_links_arguments);
+
+  $role_arguments = $common_arguments + array(
+    'machine_name' => 'Os2webRole',
+    'description' => t('Import Drupal 7 roles'),
+  );
+  Migration::registerMigration('DrupalRole7Migration',
+    $role_arguments['machine_name'], $role_arguments);
 }
