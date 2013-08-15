@@ -194,9 +194,7 @@ function os2web_migrate_register_migrations() {
         'os2web_contact_contact',
         'os2web_spotbox_box'
       ),
-      'node_migrations' => array(
-        'os2web_base_selfservice_link',
-      ),
+      'node_migrations' => $node_migrations,
     ),
     // array(
     //   'class_name' => 'Os2webGalleryMigration',
